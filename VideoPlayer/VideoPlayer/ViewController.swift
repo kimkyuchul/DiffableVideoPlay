@@ -13,15 +13,9 @@ final class ViewController: UIViewController {
     var url: [String] = []
     
     lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout.init()
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-//        layout.minimumLineSpacing = 10
-//        layout.minimumInteritemSpacing = 0
-        let cellWidth = UIScreen.main.bounds.width
-        let cellHeight = UIScreen.main.bounds.height / 2
-        layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
-        
-        let collectionView = UICollectionView.init(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.isPagingEnabled = true
         collectionView.isScrollEnabled = true
         collectionView.backgroundColor = .magenta
@@ -66,7 +60,7 @@ final class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         url.count
     }
@@ -78,9 +72,11 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height / 2)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let safeAreaHeight = view.safeAreaInsets.top + view.safeAreaInsets.bottom
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         // 셀이 보여질 때 동영상을 자동 재생합니다.
